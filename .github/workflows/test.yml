@@ -17,27 +17,32 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: init
-        run: terraform init test
+        run: cd test && terraform init test
       - name: import
         run: |
           TF_VAR_git=$(git remote get-url origin | sed -e 's|.*/||' | sed -e 's|.git$||')
-          terraform import module.this.aws_s3_bucket.this ${TF_VAR_git} test || true
-          terraform import module.this.aws_s3_bucket_public_access_block.this ${TF_VAR_git} test || true
+          cd test
+          terraform import module.this.aws_s3_bucket.this ${TF_VAR_git} || true
+          terraform import module.this.aws_s3_bucket_public_access_block.this ${TF_VAR_git} || true
       - name: apply
         run: |
           TF_VAR_git=$(git remote get-url origin | sed -e 's|.*/||' | sed -e 's|.git$||')
-          terraform apply -auto-approve test
+          cd test
+          terraform apply -auto-approve
       - name: idempotency
         run: |
           TF_VAR_git=$(git remote get-url origin | sed -e 's|.*/||' | sed -e 's|.git$||')
-          terraform plan -detailed-exitcode test
+          cd test
+          terraform plan -detailed-exitcode
       - name: destroy
         run: |
           TF_VAR_git=$(git remote get-url origin | sed -e 's|.*/||' | sed -e 's|.git$||')
-          terraform destroy -auto-approve test
+          cd test
+          terraform destroy -auto-approve
       - name: destroy idempotency
         run: |
           TF_VAR_git=$(git remote get-url origin | sed -e 's|.*/||' | sed -e 's|.git$||')
-          terraform destroy test
+          cd test
+          terraform destroy
       - name: lint
         run: terraform fmt -recursive -check
