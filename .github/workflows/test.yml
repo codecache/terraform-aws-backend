@@ -22,28 +22,29 @@ jobs:
           terraform init
       - name: import
         run: |
-          TF_VAR_git=$(git remote get-url origin | sed -e 's|.*/||' | sed -e 's|.git$||')
+          git=$(git remote get-url origin | sed -e 's|.*/||' | sed -e 's|.git$||')
+          BUCKET=$(aws s3 ls | grep ${git} | cut -d " " -f 3)
           cd test
-          terraform import module.this.aws_s3_bucket.this ${TF_VAR_git} || true
-          terraform import module.this.aws_s3_bucket_public_access_block.this ${TF_VAR_git} || true
+          terraform import module.this.aws_s3_bucket.this ${BUCKET} || true
+          terraform import module.this.aws_s3_bucket_public_access_block.this ${BUCKET} || true
       - name: apply
         run: |
-          TF_VAR_git=$(git remote get-url origin | sed -e 's|.*/||' | sed -e 's|.git$||')
+          export TF_VAR_git=$(git remote get-url origin | sed -e 's|.*/||' | sed -e 's|.git$||')
           cd test
           terraform apply -auto-approve
       - name: idempotency
         run: |
-          TF_VAR_git=$(git remote get-url origin | sed -e 's|.*/||' | sed -e 's|.git$||')
+          export TF_VAR_git=$(git remote get-url origin | sed -e 's|.*/||' | sed -e 's|.git$||')
           cd test
           terraform plan -detailed-exitcode
       - name: destroy
         run: |
-          TF_VAR_git=$(git remote get-url origin | sed -e 's|.*/||' | sed -e 's|.git$||')
+          export TF_VAR_git=$(git remote get-url origin | sed -e 's|.*/||' | sed -e 's|.git$||')
           cd test
           terraform destroy -auto-approve
       - name: destroy idempotency
         run: |
-          TF_VAR_git=$(git remote get-url origin | sed -e 's|.*/||' | sed -e 's|.git$||')
+          export TF_VAR_git=$(git remote get-url origin | sed -e 's|.*/||' | sed -e 's|.git$||')
           cd test
           terraform destroy
       - name: lint
