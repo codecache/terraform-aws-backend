@@ -15,7 +15,8 @@ resource "aws_s3_bucket" "this" {
   }
 
   lifecycle {
-    ignore_changes = [bucket_prefix]
+    # facilitates idempotent stateless execution
+    ignore_changes = [acl, bucket_prefix, force_destroy]
   }
 }
 
