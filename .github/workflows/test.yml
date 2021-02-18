@@ -17,7 +17,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: init
-        run: cd test && terraform init test
+        run: |
+          cd test
+          terraform init test
       - name: import
         run: |
           TF_VAR_git=$(git remote get-url origin | sed -e 's|.*/||' | sed -e 's|.git$||')
