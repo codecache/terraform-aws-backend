@@ -19,7 +19,7 @@ jobs:
       - name: init
         run: |
           cd test
-          terraform init test
+          terraform init
       - name: import
         run: |
           TF_VAR_git=$(git remote get-url origin | sed -e 's|.*/||' | sed -e 's|.git$||')
