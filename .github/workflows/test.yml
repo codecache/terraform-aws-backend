@@ -27,6 +27,7 @@ jobs:
           cd test
           terraform import module.this.aws_s3_bucket.this ${BUCKET} || true
           terraform import module.this.aws_s3_bucket_public_access_block.this ${BUCKET} || true
+          terraform plan
       - name: apply
         run: |
           export TF_VAR_git=$(git remote get-url origin | sed -e 's|.*/||' | sed -e 's|.git$||')
