@@ -37,11 +37,11 @@ jobs:
           export TF_VAR_git=$(git remote get-url origin | sed -e 's|.*/||' | sed -e 's|.git$||')
           cd test
           terraform plan -detailed-exitcode
-      - name: destroy
-        run: |
-          export TF_VAR_git=$(git remote get-url origin | sed -e 's|.*/||' | sed -e 's|.git$||')
-          cd test
-          terraform destroy -auto-approve
+      # - name: destroy
+      #   run: |
+      #     export TF_VAR_git=$(git remote get-url origin | sed -e 's|.*/||' | sed -e 's|.git$||')
+      #     cd test
+      #     terraform destroy -auto-approve
       - name: destroy idempotency
         run: |
           export TF_VAR_git=$(git remote get-url origin | sed -e 's|.*/||' | sed -e 's|.git$||')
