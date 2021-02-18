@@ -46,6 +46,6 @@ jobs:
         run: |
           export TF_VAR_git=$(git remote get-url origin | sed -e 's|.*/||' | sed -e 's|.git$||')
           cd test
-          terraform destroy
+          terraform plan -destroy -detailed-exitcode
       - name: lint
         run: terraform fmt -recursive -check
