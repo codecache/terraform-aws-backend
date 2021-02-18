@@ -1,7 +1,7 @@
 module "this" {
   source = "../"
   name   = var.git
-  tags   = var.tags
+  tags   = local.tags
 }
 
 variable "git" {}
