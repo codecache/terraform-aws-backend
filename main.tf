@@ -13,6 +13,10 @@ resource "aws_s3_bucket" "this" {
       }
     }
   }
+
+  lifecycle {
+    ignore_changes = [bucket_prefix]
+  }
 }
 
 resource "aws_s3_bucket_public_access_block" "this" {
